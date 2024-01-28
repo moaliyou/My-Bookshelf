@@ -1,0 +1,10 @@
+package com.example.my_bookshelf.data.remote.dto
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class BookResponse(
+    val books: List<Book>,
+    val kind: String,
+    val totalBooks: Int
+)
