@@ -79,13 +79,13 @@ private fun BookContent(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(book.volumeInfo.imageLinks.thumbnail)
+                    .data(book.volumeInfo.imageLinks.thumbnail.replace("http", "https"))
                     .crossfade(true)
                     .build(),
                 placeholder = painterResource(R.drawable.ic_broken_image),
                 contentDescription = book.volumeInfo.title,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.size(width = 128.dp, height = 172.dp)
+                modifier = Modifier.size(width = 128.dp, height = 181.dp)
             )
             BookVolumeInfoSection(
                 modifier = Modifier
