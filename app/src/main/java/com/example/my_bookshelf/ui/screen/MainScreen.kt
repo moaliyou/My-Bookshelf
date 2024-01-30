@@ -4,10 +4,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,17 +30,39 @@ import com.example.my_bookshelf.data.remote.dto.VolumeInfo
 import com.example.my_bookshelf.ui.theme.MyBookshelfTheme
 
 @Composable
-fun MainScreen() {
-
+fun MainScreen(
+    mainUiState: MainUiState,
+    modifier: Modifier
+) {
+    when (mainUiState) {
+        is MainUiState.Loading -> {}
+        is MainUiState.Error -> {}
+        is MainUiState.Success -> {
+            MainDetailScreen(
+                books = mainUiState.bookResponse.books,
+                modifier = modifier
+            )
+        }
+    }
 }
 
 @Composable
-private fun MainDetailScreen() {
-
+private fun MainDetailScreen(
+    modifier: Modifier = Modifier,
+    books: List<Book>
+) {
+    LazyColumn(modifier = modifier) {
+        items(books) { book ->
+            BookContent(
+                book = book,
+                modifier = Modifier.padding(8.dp).fillMaxWidth()
+            )
+        }
+    }
 }
 
 @Composable
-fun BookContent(
+private fun BookContent(
     modifier: Modifier = Modifier,
     book: Book
 ) {
@@ -48,7 +72,10 @@ fun BookContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 4.dp
+                )
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -74,7 +101,7 @@ fun BookContent(
 }
 
 @Composable
-fun BookVolumeInfoSection(
+private fun BookVolumeInfoSection(
     modifier: Modifier = Modifier,
     title: String,
     authors: List<String>,
@@ -94,7 +121,7 @@ fun BookVolumeInfoSection(
             text = authors.toString(),
             style = MaterialTheme.typography.titleSmall
         )
-        Spacer(modifier = Modifier.fillMaxHeight(0.5f))
+        Spacer(modifier = Modifier.height(50.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -132,5 +159,30 @@ private fun BookContentPreview() {
 
     MyBookshelfTheme {
         BookContent(book = mockData)
+    }
+}
+
+@Preview
+@Composable
+private fun MainDetailsScreenPreview() {
+    val volumeInfo = VolumeInfo(
+        authors = listOf("Ted Gioia"),
+        categories = listOf("Social Science"),
+        description = "",
+        imageLinks = ImageLinks(
+            smallThumbnail = "",
+            "https://books.google.com/books/content?id=C1MI_4nZyD4C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+        ),
+        pageCount = 481,
+        publishedDate = "1997-11-20",
+        publisher = "Oxford University Press, USA",
+        title = "The History of Jazz"
+    )
+    val mockData = List(10) {
+        Book(id = "C1MI_4nZyD4C", volumeInfo = volumeInfo)
+    }
+
+    MyBookshelfTheme {
+        MainDetailScreen(books = mockData)
     }
 }
