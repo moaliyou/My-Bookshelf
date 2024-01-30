@@ -85,7 +85,7 @@ private fun BookContent(
                 placeholder = painterResource(R.drawable.ic_broken_image),
                 contentDescription = book.volumeInfo.title,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.size(width = 128.dp, height = 181.dp)
+                modifier = Modifier.size(width = 128.dp, height = 172.dp)
             )
             BookVolumeInfoSection(
                 modifier = Modifier
