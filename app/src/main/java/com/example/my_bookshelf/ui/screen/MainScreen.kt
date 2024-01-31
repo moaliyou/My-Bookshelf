@@ -57,7 +57,9 @@ private fun MainDetailScreen(
         items(books) { book ->
             BookContent(
                 book = book,
-                modifier = Modifier.padding(4.dp).fillMaxWidth()
+                modifier = Modifier
+                    .padding(4.dp)
+                    .fillMaxWidth()
             )
         }
     }
@@ -75,12 +77,9 @@ private fun BookContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    horizontal = 16.dp,
-                    vertical = 8.dp
-                ),
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -91,17 +90,10 @@ private fun BookContent(
                 contentDescription = book.volumeInfo.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(width = 128.dp, height = 181.dp)
-                    .clip(RoundedCornerShape(4.dp))
+                    .size(width = 84.dp, height = 121.dp)
+                    .clip(RoundedCornerShape(2.dp))
             )
             BookVolumeInfoSection(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(
-                        horizontal = 16.dp,
-                        vertical = 16.dp
-                    ),
                 title = book.volumeInfo.title,
                 authors = book.volumeInfo.authors,
                 pageCount = book.volumeInfo.pageCount,
@@ -113,14 +105,13 @@ private fun BookContent(
 
 @Composable
 private fun BookVolumeInfoSection(
-    modifier: Modifier = Modifier,
     title: String,
     authors: List<String>,
     pageCount: Int,
     publisherDate: String
 ) {
     Column(
-        modifier = modifier,
+        modifier = Modifier.padding(end = 16.dp),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -132,7 +123,7 @@ private fun BookVolumeInfoSection(
             text = authors.toString(),
             style = MaterialTheme.typography.titleSmall
         )
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(60.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -169,7 +160,12 @@ private fun BookContentPreview() {
     val mockData = Book(id = "C1MI_4nZyD4C", volumeInfo = volumeInfo)
 
     MyBookshelfTheme {
-        BookContent(book = mockData)
+        BookContent(
+            book = mockData,
+            modifier = Modifier
+                .padding(4.dp)
+                .fillMaxWidth()
+        )
     }
 }
 
