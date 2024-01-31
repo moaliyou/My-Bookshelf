@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -76,7 +77,7 @@ private fun BookContent(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -111,17 +112,17 @@ private fun BookVolumeInfoSection(
     publisherDate: String
 ) {
     Column(
-        modifier = Modifier.padding(end = 16.dp),
+        modifier = Modifier.padding(end = 8.dp),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleMedium
         )
         Text(
             text = authors.toString(),
-            style = MaterialTheme.typography.titleSmall
+            style = MaterialTheme.typography.labelMedium
         )
         Spacer(modifier = Modifier.height(60.dp))
         Row(
@@ -183,7 +184,7 @@ private fun MainDetailsScreenPreview() {
         pageCount = 481,
         publishedDate = "1997-11-20",
         publisher = "Oxford University Press, USA",
-        title = "The History of Jazz"
+        title = "Introduction to Jazz History"
     )
     val mockData = List(10) {
         Book(id = "C1MI_4nZyD4C", volumeInfo = volumeInfo)
