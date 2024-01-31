@@ -17,6 +17,6 @@ fun BookshelfApp() {
 
     MainScreen(
         mainUiState = mainUiState,
-        modifier = Modifier.fillMaxSize().padding(16.dp)
+        modifier = Modifier.fillMaxSize().padding(8.dp)
     )
 }

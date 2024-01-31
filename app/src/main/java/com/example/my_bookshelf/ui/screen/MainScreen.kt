@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -55,7 +57,7 @@ private fun MainDetailScreen(
         items(books) { book ->
             BookContent(
                 book = book,
-                modifier = Modifier.padding(8.dp).fillMaxWidth()
+                modifier = Modifier.padding(4.dp).fillMaxWidth()
             )
         }
     }
@@ -67,15 +69,18 @@ private fun BookContent(
     book: Book
 ) {
     Card(
-        modifier = modifier
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
                     horizontal = 16.dp,
-                    vertical = 4.dp
-                )
+                    vertical = 8.dp
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -85,12 +90,18 @@ private fun BookContent(
                 placeholder = painterResource(R.drawable.ic_broken_image),
                 contentDescription = book.volumeInfo.title,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.size(width = 128.dp, height = 181.dp)
+                modifier = Modifier
+                    .size(width = 128.dp, height = 181.dp)
+                    .clip(RoundedCornerShape(4.dp))
             )
             BookVolumeInfoSection(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .weight(1f)
+                    .padding(
+                        horizontal = 16.dp,
+                        vertical = 16.dp
+                    ),
                 title = book.volumeInfo.title,
                 authors = book.volumeInfo.authors,
                 pageCount = book.volumeInfo.pageCount,
