@@ -83,7 +83,12 @@ private fun BookContent(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(book.volumeInfo.imageLinks.thumbnail.replace("http", "https"))
+                    .data(
+                        book.volumeInfo.imageLinks.thumbnail.replace(
+                            "http",
+                            "https"
+                        )
+                    )
                     .crossfade(true)
                     .build(),
                 placeholder = painterResource(R.drawable.ic_broken_image),
@@ -95,7 +100,7 @@ private fun BookContent(
             )
             BookVolumeInfoSection(
                 title = book.volumeInfo.title,
-                authors = book.volumeInfo.authors,
+                publisher = book.volumeInfo.publisher!!,
                 pageCount = book.volumeInfo.pageCount,
                 publisherDate = book.volumeInfo.publishedDate
             )
@@ -106,7 +111,7 @@ private fun BookContent(
 @Composable
 private fun BookVolumeInfoSection(
     title: String,
-    authors: List<String>,
+    publisher: String,
     pageCount: Int,
     publisherDate: String
 ) {
@@ -120,7 +125,7 @@ private fun BookVolumeInfoSection(
             style = MaterialTheme.typography.titleMedium
         )
         Text(
-            text = authors.toString(),
+            text = publisher,
             style = MaterialTheme.typography.labelMedium
         )
         Spacer(modifier = Modifier.height(60.dp))
@@ -145,7 +150,7 @@ private fun BookVolumeInfoSection(
 @Composable
 private fun BookContentPreview() {
     val volumeInfo = VolumeInfo(
-        authors = listOf("Ted Gioia"),
+        authors = listOf("Ted Gioia", "Iman Khan", "John Smith"),
         categories = listOf("Social Science"),
         description = "",
         imageLinks = ImageLinks(
@@ -173,7 +178,7 @@ private fun BookContentPreview() {
 @Composable
 private fun MainDetailsScreenPreview() {
     val volumeInfo = VolumeInfo(
-        authors = listOf("Ted Gioia"),
+        authors = listOf("Ted Gioia", "Iman Khan", "John Smith"),
         categories = listOf("Social Science"),
         description = "",
         imageLinks = ImageLinks(
