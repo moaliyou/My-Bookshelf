@@ -25,7 +25,7 @@ class BookViewModel(
         viewModelScope.launch {
             _uiState.value = BookUiState.Loading
             _uiState.value = try {
-                BookUiState.Success(bookRepository.getBook(bookId)!!)
+                BookUiState.Success(bookRepository.getBooks(bookId)!!)
             } catch (e: ServerResponseException) {
                 BookUiState.Error
             } catch (e: ClientRequestException) {

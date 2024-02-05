@@ -10,6 +10,7 @@ import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.url
+import io.ktor.serialization.JsonConvertException
 
 class NetworkBookRepository(
     private val client: HttpClient
@@ -33,12 +34,15 @@ class NetworkBookRepository(
         return try {
             client.get {
                 url(Routes.VOLUMES)
-                parameter("/", id)
+                parameter("q", id)
             }.body()
         } catch (e: ServerResponseException) {
             println(e.message)
             null
         } catch (e: ClientRequestException) {
+            println(e.message)
+            null
+        } catch (e: JsonConvertException) {
             println(e.message)
             null
         }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,15 +35,19 @@ import com.example.my_bookshelf.ui.theme.MyBookshelfTheme
 @Composable
 fun MainScreen(
     mainUiState: MainUiState,
-    modifier: Modifier
+    modifier: Modifier,
+    onClick: (String) -> Unit
 ) {
     when (mainUiState) {
         is MainUiState.Loading -> {}
         is MainUiState.Error -> {}
         is MainUiState.Success -> {
             MainDetailScreen(
+                modifier = modifier,
                 books = mainUiState.bookResponse.books,
-                modifier = modifier
+                onClick = {
+                    onClick(it)
+                }
             )
         }
     }
@@ -51,28 +56,35 @@ fun MainScreen(
 @Composable
 private fun MainDetailScreen(
     modifier: Modifier = Modifier,
-    books: List<Book>
+    books: List<Book>,
+    onClick: (String) -> Unit
 ) {
     LazyColumn(modifier = modifier) {
         items(books) { book ->
             BookContent(
-                book = book,
                 modifier = Modifier
                     .padding(4.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                book = book,
+                onClick = {
+                    onClick(book.id)
+                }
             )
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun BookContent(
     modifier: Modifier = Modifier,
-    book: Book
+    book: Book,
+    onClick: () -> Unit
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
+        onClick = onClick
     ) {
         Row(
             modifier = Modifier
@@ -166,10 +178,11 @@ private fun BookContentPreview() {
 
     MyBookshelfTheme {
         BookContent(
-            book = mockData,
             modifier = Modifier
                 .padding(4.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            book = mockData,
+            onClick = {}
         )
     }
 }
@@ -195,6 +208,9 @@ private fun MainDetailsScreenPreview() {
     }
 
     MyBookshelfTheme {
-        MainDetailScreen(books = mockData)
+        MainDetailScreen(
+            books = mockData,
+            onClick = {}
+        )
     }
 }

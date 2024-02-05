@@ -88,6 +88,9 @@ dependencies {
     // An image loading library for Android backed by Kotlin Coroutines
     implementation("io.coil-kt:coil-compose:2.5.0")
 
+    implementation("io.ktor:ktor-client-logging:$ktorVersion")
+    implementation("ch.qos.logback:logback-classic:1.2.3")
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

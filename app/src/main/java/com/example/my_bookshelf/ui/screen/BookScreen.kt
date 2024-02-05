@@ -37,7 +37,7 @@ fun BookScreen(
         is BookUiState.Loading -> {}
         is BookUiState.Error -> {}
         is BookUiState.Success -> {
-            BookDetails(book = bookUiState.book, modifier = modifier)
+            BookDetails(books = bookUiState.book.books, modifier = modifier)
         }
     }
 }
@@ -45,67 +45,69 @@ fun BookScreen(
 @Composable
 fun BookDetails(
     modifier: Modifier = Modifier,
-    book: Book
+    books: List<Book>
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        Text(text = book.volumeInfo.title, style = MaterialTheme.typography.titleLarge)
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(
-                    book.volumeInfo.imageLinks.thumbnail.replace(
-                        "http",
-                        "https"
+        books.forEach { book ->
+            Text(text = book.volumeInfo.title, style = MaterialTheme.typography.titleLarge)
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(
+                        book.volumeInfo.imageLinks.thumbnail.replace(
+                            "http",
+                            "https"
+                        )
                     )
-                )
-                .crossfade(true)
-                .build(),
-            placeholder = painterResource(R.drawable.ic_broken_image),
-            contentDescription = book.volumeInfo.title,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(width = 104.dp, height = 141.dp)
-                .clip(RoundedCornerShape(2.dp))
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Column {
-                Text(
-                    text = "Authors",
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Text(
-                    text = book.volumeInfo.authors.joinToString("\n"),
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-            Column {
-                Text(
-                    text = "Categories",
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Text(
-                    text = book.volumeInfo.categories.joinToString("\n"),
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-        }
-        Column(
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            Text(text = "Description", style = MaterialTheme.typography.titleMedium)
-            Text(
-                text = book.volumeInfo.description!!,
-                textAlign = TextAlign.Justify,
-                style = MaterialTheme.typography.bodySmall
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(R.drawable.ic_broken_image),
+                contentDescription = book.volumeInfo.title,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(width = 104.dp, height = 141.dp)
+                    .clip(RoundedCornerShape(2.dp))
             )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Column {
+                    Text(
+                        text = "Authors",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Text(
+                        text = book.volumeInfo.authors.joinToString("\n"),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+                Column {
+                    Text(
+                        text = "Categories",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Text(
+                        text = book.volumeInfo.categories.joinToString("\n"),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(text = "Description", style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = book.volumeInfo.description!!,
+                    textAlign = TextAlign.Justify,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 9
+                )
+            }
         }
-
     }
 }
 
@@ -125,14 +127,14 @@ private fun BookDetailsPreview() {
         publisher = "Oxford University Press, USA",
         title = "The History of Jazz"
     )
-    val mockData = Book(id = "C1MI_4nZyD4C", volumeInfo = volumeInfo)
+    val mockData = listOf(Book(id = "C1MI_4nZyD4C", volumeInfo = volumeInfo))
 
     MyBookshelfTheme {
         BookDetails(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            book = mockData
+            books = mockData
         )
     }
 }
